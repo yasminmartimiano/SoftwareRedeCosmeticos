@@ -3,12 +3,15 @@ package com.lojacosmeticos.lojacosmeticos.Spring.service;
 import com.lojacosmeticos.lojacosmeticos.Spring.exception.ResourceNotFoundException;
 import com.lojacosmeticos.lojacosmeticos.Spring.model.Servicos;
 import com.lojacosmeticos.lojacosmeticos.Spring.repository.ServicosRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class ServicosService {
+    @Autowired
+
     private final ServicosRepository repository;
 
     public ServicosService(ServicosRepository repository) {

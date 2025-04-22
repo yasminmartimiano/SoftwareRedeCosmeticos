@@ -1,5 +1,6 @@
 package com.lojacosmeticos.lojacosmeticos.Spring.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -36,10 +37,11 @@ public class Produto {
     @NotNull
     @Column(name = "preco", nullable = false)
     private Double precoProduto;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL)
     private List<EntradaEstoque> entradaEstoque = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL)
     private List<SaidaEstoque> saidaEstoque = new ArrayList<>();
 
@@ -53,6 +55,9 @@ public class Produto {
         this.precoProduto = precoProduto;
         this.entradaEstoque = entradaEstoque;
         this.saidaEstoque = saidaEstoque;
+    }
+
+    public Produto() {
     }
 
     public Long getId() {

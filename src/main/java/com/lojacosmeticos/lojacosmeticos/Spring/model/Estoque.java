@@ -2,8 +2,6 @@ package com.lojacosmeticos.lojacosmeticos.Spring.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
 
 
 @Entity
@@ -18,25 +16,13 @@ public class Estoque {
     @OneToOne
     @JoinColumn(name = "produto_id", nullable = false)
     private Produto produto;
-
-    @NotNull
-    @ManyToOne
-    @JoinColumn(name = "fornecedor_id", nullable = false)
-    private Fornecedor fornecedor;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "categoria_produto")
-    private CategoriaProdutos categoriaProduto;
-
     @NotNull
     @Column(name = "quantidade_atual", nullable = false)
-    private Integer quantidadeAtual;
+    private Integer quantidadeAtual =0;
 
-    public Estoque(Long id, Produto produto, Fornecedor fornecedor, CategoriaProdutos categoriaProduto, Integer quantidadeAtual) {
+    public Estoque(Long id, Produto produto, Integer quantidadeAtual) {
         this.id = id;
         this.produto = produto;
-        this.fornecedor = fornecedor;
-        this.categoriaProduto = categoriaProduto;
         this.quantidadeAtual = quantidadeAtual;
     }
 
@@ -59,22 +45,6 @@ public class Estoque {
         this.produto = produto;
     }
 
-    public Fornecedor getFornecedor() {
-        return fornecedor;
-    }
-
-    public void setFornecedor(Fornecedor fornecedor) {
-        this.fornecedor = fornecedor;
-    }
-
-    public CategoriaProdutos getCategoriaProduto() {
-        return categoriaProduto;
-    }
-
-    public void setCategoriaProduto(CategoriaProdutos categoriaProduto) {
-        this.categoriaProduto = categoriaProduto;
-    }
-
     public Integer getQuantidadeAtual() {
         return quantidadeAtual;
     }
@@ -83,6 +53,3 @@ public class Estoque {
         this.quantidadeAtual = quantidadeAtual;
     }
 }
-
-
-

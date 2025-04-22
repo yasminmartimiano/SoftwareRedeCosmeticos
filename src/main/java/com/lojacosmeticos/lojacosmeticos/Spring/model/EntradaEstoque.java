@@ -29,7 +29,8 @@ public class EntradaEstoque {
     @Column(name = "quantidade", nullable = false)
     private Integer quantidade;
 
-    @Column(name = "data_entrada")
+    @NotNull
+    @Column(name = "data_entrada", nullable = false)
     private LocalDateTime dataEntrada;
 
     @Enumerated(EnumType.STRING)

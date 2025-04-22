@@ -1,6 +1,6 @@
 package com.lojacosmeticos.lojacosmeticos.Spring.service;
 
-import com.lojacosmeticos.lojacosmeticos.Spring.model.EntradaEstoque;
+import com.lojacosmeticos.lojacosmeticos.Spring.model.*;
 import com.lojacosmeticos.lojacosmeticos.Spring.repository.EntradaEstoqueRepository;
 import com.lojacosmeticos.lojacosmeticos.Spring.repository.EstoqueRepository;
 import com.lojacosmeticos.lojacosmeticos.Spring.repository.FornecedorRepository;
@@ -8,79 +8,52 @@ import com.lojacosmeticos.lojacosmeticos.Spring.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EntradaEstoqueService {
     @Autowired
     private EntradaEstoqueRepository entradaEstoqueRepository;
-
     @Autowired
     private ProdutoRepository produtoRepository;
+    @Autowired
+
+    private FornecedorRepository fornecedorRepository;
 
     @Autowired
     private EstoqueRepository estoqueRepository;
 
-    @Autowired
-    private FornecedorRepository fornecedorRepository;
-
-    public EntradaEstoque salvarEntrada(EntradaEstoque entradaEstoque) {
-        if (entradaEstoque.getQuantidade() == null || entradaEstoque.getQuantidade() <= 0) {
-            throw new RuntimeException("A quantidade de entrada precisa ser maior que zero.");
+    public EntradaEstoque registrarEntrada(EntradaEstoque entradaEstoque) {
+        if (entradaEstoque.getQuantidade() <= 0) {
+            throw new IllegalArgumentException("A quantidade deve ser maior que zero.");
         }
 
-        if (!produtoRepository.existsById(entradaEstoque.getProduto().getId())) {
-            throw new RuntimeException("Produto não encontrado.");
+        if (entradaEstoque.getProduto() == null || !produtoRepository.existsById(entradaEstoque.getProduto().getId())) {
+            throw new IllegalArgumentException("Produto não encontrado.");
         }
 
-        if (!estoqueRepository.existsById(entradaEstoque.getEstoque().getId())) {
-            throw new RuntimeException("Estoque não encontrado.");
+        if (entradaEstoque.getEstoque() == null || !estoqueRepository.existsById(entradaEstoque.getEstoque().getId())) {
+            throw new IllegalArgumentException("Estoque não encontrado.");
         }
 
-        if (!fornecedorRepository.existsById(entradaEstoque.getFornecedor().getId())) {
-            throw new RuntimeException("Fornecedor não encontrado.");
+        if (entradaEstoque.getFornecedor() == null || !fornecedorRepository.existsById(entradaEstoque.getFornecedor().getId())) {
+            throw new IllegalArgumentException("Fornecedor não encontrado.");
         }
 
-        entradaEstoque.setDataEntrada(LocalDateTime.now());
         return entradaEstoqueRepository.save(entradaEstoque);
     }
 
-    public EntradaEstoque buscarPorId(Long id) {
-        return entradaEstoqueRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Entrada de estoque não encontrada."));
+    public List<EntradaEstoque> listarTodas() {
+        return entradaEstoqueRepository.findAll();
     }
 
-    public EntradaEstoque atualizarEntrada(Long id, EntradaEstoque entradaEstoque) {
-        EntradaEstoque entradaExistente = buscarPorId(id);
-
-        if (entradaEstoque.getQuantidade() == null || entradaEstoque.getQuantidade() <= 0) {
-            throw new RuntimeException("A quantidade de entrada precisa ser maior que zero.");
-        }
-
-        if (!produtoRepository.existsById(entradaEstoque.getProduto().getId())) {
-            throw new RuntimeException("Produto não encontrado.");
-        }
-
-        if (!estoqueRepository.existsById(entradaEstoque.getEstoque().getId())) {
-            throw new RuntimeException("Estoque não encontrado.");
-        }
-
-        if (!fornecedorRepository.existsById(entradaEstoque.getFornecedor().getId())) {
-            throw new RuntimeException("Fornecedor não encontrado.");
-        }
-
-        entradaExistente.setProduto(entradaEstoque.getProduto());
-        entradaExistente.setEstoque(entradaEstoque.getEstoque());
-        entradaExistente.setFornecedor(entradaEstoque.getFornecedor());
-        entradaExistente.setQuantidade(entradaEstoque.getQuantidade());
-        entradaExistente.setCategoria(entradaEstoque.getCategoria());
-        entradaExistente.setDataEntrada(LocalDateTime.now());
-
-        return entradaEstoqueRepository.save(entradaExistente);
+    public Optional<EntradaEstoque> buscarPorId(Long id) {
+        return entradaEstoqueRepository.findById(id);
     }
 
-    public void excluirEntrada(Long id) {
-        EntradaEstoque entradaExistente = buscarPorId(id);
-        entradaEstoqueRepository.delete(entradaExistente);
+    public void deletarPorId(Long id) {
+        entradaEstoqueRepository.deleteById(id);
     }
+
 }

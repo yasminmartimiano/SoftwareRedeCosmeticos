@@ -1,6 +1,9 @@
 package com.lojacosmeticos.lojacosmeticos.Spring.controller;
 
 import com.lojacosmeticos.lojacosmeticos.Spring.model.EntradaEstoque;
+import com.lojacosmeticos.lojacosmeticos.Spring.model.Estoque;
+import com.lojacosmeticos.lojacosmeticos.Spring.repository.EntradaEstoqueRepository;
+import com.lojacosmeticos.lojacosmeticos.Spring.repository.EstoqueRepository;
 import com.lojacosmeticos.lojacosmeticos.Spring.service.EntradaEstoqueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,46 +13,36 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/entrada-estoque")
 public class EntradaEstoqueController {
+
     @Autowired
-    private EntradaEstoqueService entradaEstoqueService;
+    private EntradaEstoqueRepository entradaEstoqueRepository;
+
+    @Autowired
+    private EstoqueRepository estoqueRepository;
 
     @PostMapping
-    public ResponseEntity<EntradaEstoque> criarEntrada(@RequestBody EntradaEstoque entradaEstoque) {
+    public ResponseEntity<String> registrarEntrada(@RequestBody EntradaEstoque entrada) {
         try {
-            EntradaEstoque entradaSalva = entradaEstoqueService.salvarEntrada(entradaEstoque);
-            return new ResponseEntity<>(entradaSalva, HttpStatus.CREATED);
+            Estoque estoque = entrada.getEstoque();
+            estoque.setQuantidadeAtual(estoque.getQuantidadeAtual() + entrada.getQuantidade());
+            estoqueRepository.save(estoque);
+            entradaEstoqueRepository.save(entrada);
+            return ResponseEntity.ok("Entrada registrada e estoque atualizado!");
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erro ao registrar entrada: " + e.getMessage());
         }
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<EntradaEstoque> buscarEntradaPorId(@PathVariable Long id) {
+    @GetMapping
+    public ResponseEntity<?> listarEntradas() {
         try {
-            EntradaEstoque entrada = entradaEstoqueService.buscarPorId(id);
-            return new ResponseEntity<>(entrada, HttpStatus.OK);
+            return ResponseEntity.ok(entradaEstoqueRepository.findAll());
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<EntradaEstoque> atualizarEntrada(@PathVariable Long id, @RequestBody EntradaEstoque entradaEstoque) {
-        try {
-            EntradaEstoque entradaAtualizada = entradaEstoqueService.atualizarEntrada(id, entradaEstoque);
-            return new ResponseEntity<>(entradaAtualizada, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deletarEntrada(@PathVariable Long id) {
-        try {
-            entradaEstoqueService.excluirEntrada(id);
-            return new ResponseEntity<>("Entrada de estoque removida com sucesso!", HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Erro ao excluir a entrada de estoque.", HttpStatus.NOT_FOUND);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erro ao listar entradas: " + e.getMessage());
         }
     }
 }
+
+

@@ -1,49 +1,73 @@
 package com.lojacosmeticos.lojacosmeticos.Spring.controller;
 
 import com.lojacosmeticos.lojacosmeticos.Spring.model.Produto;
-import com.lojacosmeticos.lojacosmeticos.Spring.repository.ProdutoRepository;
 import com.lojacosmeticos.lojacosmeticos.Spring.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Optional;
+
 
 @RestController
 @RequestMapping("/produto")
 public class ProdutoController {
 
-    private final ProdutoService produtoService;
+    @Autowired
+    private ProdutoService produtoService;
 
-    public ProdutoController(ProdutoService produtoService) {
-        this.produtoService = produtoService;
+    @PostMapping
+    public ResponseEntity<?> salvarProduto(@RequestBody Produto produto) {
+        try {
+            Produto novoProduto = produtoService.salvarProduto(produto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(novoProduto);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao salvar produto: " + e.getMessage());
+        }
     }
 
     @GetMapping
-    public ResponseEntity<List<Produto>> listarTodos() {
-        return ResponseEntity.ok(produtoService.listarTodos());
+    public ResponseEntity<?> listarProdutos() {
+        try {
+            return ResponseEntity.ok(produtoService.listarTodos());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao listar produtos: " + e.getMessage());
+        }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Produto> buscarPorId(@PathVariable Long id) {
-        return ResponseEntity.ok(produtoService.buscarPorId(id));
+    public ResponseEntity<?> buscarProdutoPorId(@PathVariable Long id) {
+        try {
+            Optional<Produto> produto = produtoService.buscarPorId(id);
+            if (produto.isPresent()) {
+                return ResponseEntity.ok(produto.get());
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto não encontrado!");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao buscar produto: " + e.getMessage());
+        }
     }
 
-    @PostMapping
-    public ResponseEntity<Produto> salvar(@RequestBody Produto produto) {
-        return new ResponseEntity<>(produtoService.salvar(produto), HttpStatus.CREATED);
-    }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Produto> atualizar(@PathVariable Long id, @RequestBody Produto produto) {
-        return ResponseEntity.ok(produtoService.atualizar(id, produto));
+    public ResponseEntity<?> atualizarProduto(@PathVariable Long id, @RequestBody Produto produto) {
+        try {
+            Produto atualizado = produtoService.atualizarProduto(id, produto);
+            return ResponseEntity.ok(atualizado);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable Long id) {
-        produtoService.deletar(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<?> deletarProduto(@PathVariable Long id) {
+        try {
+            produtoService.deletarProduto(id);
+            return ResponseEntity.ok("Produto deletado com sucesso!");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao deletar produto: " + e.getMessage());
+        }
     }
-
 }

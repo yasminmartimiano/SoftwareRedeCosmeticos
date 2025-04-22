@@ -15,11 +15,11 @@ public class SaidaEstoque {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "produto_id", nullable = false)
     private Produto produto;
     @NotNull
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "estoque_id",nullable = false)
     private Estoque estoque;
     @NotNull
@@ -32,7 +32,7 @@ public class SaidaEstoque {
     @Column(name = "categoria",nullable = true)
     private CategoriaProdutos categoria;
     @NotNull
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "fornecedor_id", nullable = false)
     private Fornecedor fornecedor;
 

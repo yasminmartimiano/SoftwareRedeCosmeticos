@@ -1,49 +1,54 @@
 package com.lojacosmeticos.lojacosmeticos.Spring.controller;
 
+import com.lojacosmeticos.lojacosmeticos.Spring.model.Estoque;
 import com.lojacosmeticos.lojacosmeticos.Spring.model.SaidaEstoque;
+import com.lojacosmeticos.lojacosmeticos.Spring.repository.EstoqueRepository;
+import com.lojacosmeticos.lojacosmeticos.Spring.repository.SaidaEstoqueRepository;
 import com.lojacosmeticos.lojacosmeticos.Spring.service.SaidaEstoqueService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/saida_estoque")
 public class SaidaEstoqueController {
 
-    private final SaidaEstoqueService service;
+    @Autowired
+    private SaidaEstoqueRepository saidaEstoqueRepository;
 
-    public SaidaEstoqueController(SaidaEstoqueService service) {
-        this.service = service;
+    @Autowired
+    private EstoqueRepository estoqueRepository;
+
+    @PostMapping
+    public ResponseEntity<String> registrarSaida(@RequestBody SaidaEstoque saida) {
+        try {
+            Estoque estoque = saida.getEstoque();
+            if (estoque.getQuantidadeAtual() < saida.getQuantidade()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Estoque insuficiente para essa saída!");
+            }
+            estoque.setQuantidadeAtual(estoque.getQuantidadeAtual() - saida.getQuantidade());
+            estoqueRepository.save(estoque);
+            saidaEstoqueRepository.save(saida);
+            return ResponseEntity.ok("Saída registrada e estoque atualizado!");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erro ao registrar saída: " + e.getMessage());
+        }
     }
 
     @GetMapping
-    public List<SaidaEstoque> listarTodas() {
-        return service.listarSaidas();
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<SaidaEstoque> buscarPorId(@PathVariable Long id) {
-        return ResponseEntity.ok(service.buscarPorId(id));
-    }
-
-    @PostMapping
-    public ResponseEntity<SaidaEstoque> criar(@RequestBody SaidaEstoque saidaEstoque) {
-        SaidaEstoque novaSaida = service.salvarSaida(saidaEstoque);
-        return ResponseEntity.ok(novaSaida);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<SaidaEstoque> atualizar(@PathVariable Long id, @RequestBody SaidaEstoque saidaAtualizada) {
-        SaidaEstoque saida = service.atualizarSaida(id, saidaAtualizada);
-        return ResponseEntity.ok(saida);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable Long id) {
-        service.deletarSaida(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<?> listarSaidas() {
+        try {
+            return ResponseEntity.ok(saidaEstoqueRepository.findAll());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erro ao listar saídas: " + e.getMessage());
+        }
     }
 }
+
+
+
 
 

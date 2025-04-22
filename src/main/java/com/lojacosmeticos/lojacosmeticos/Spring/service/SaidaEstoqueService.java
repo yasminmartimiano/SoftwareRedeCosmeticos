@@ -1,46 +1,65 @@
 package com.lojacosmeticos.lojacosmeticos.Spring.service;
 
-import com.lojacosmeticos.lojacosmeticos.Spring.exception.ResourceNotFoundException;
-import com.lojacosmeticos.lojacosmeticos.Spring.model.SaidaEstoque;
+import com.lojacosmeticos.lojacosmeticos.Spring.model.*;
+import com.lojacosmeticos.lojacosmeticos.Spring.repository.EstoqueRepository;
+import com.lojacosmeticos.lojacosmeticos.Spring.repository.FornecedorRepository;
+import com.lojacosmeticos.lojacosmeticos.Spring.repository.ProdutoRepository;
 import com.lojacosmeticos.lojacosmeticos.Spring.repository.SaidaEstoqueRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class SaidaEstoqueService {
-    private final SaidaEstoqueRepository repository;
+    @Autowired
+    private SaidaEstoqueRepository saidaEstoqueRepository;
 
-    public SaidaEstoqueService(SaidaEstoqueRepository repository) {
-        this.repository = repository;
+    @Autowired
+    private EstoqueRepository estoqueRepository;
+
+    @Autowired
+
+    private ProdutoRepository produtoRepository;
+    @Autowired
+
+    private FornecedorRepository fornecedorRepository;
+
+
+    public SaidaEstoque registrarSaida(SaidaEstoque saidaEstoque) throws Exception {
+        if (saidaEstoque.getQuantidade() <= 0) {
+            throw new IllegalArgumentException("A quantidade deve ser maior que zero.");
+        }
+
+        if (saidaEstoque.getProduto() == null || !produtoRepository.existsById(saidaEstoque.getProduto().getId())) {
+            throw new IllegalArgumentException("Produto não encontrado.");
+        }
+
+        if (saidaEstoque.getEstoque() == null || !estoqueRepository.existsById(saidaEstoque.getEstoque().getId())) {
+            throw new IllegalArgumentException("Estoque não encontrado.");
+        }
+
+
+        if (saidaEstoque.getFornecedor() == null || !fornecedorRepository.existsById(saidaEstoque.getFornecedor().getId())) {
+            throw new IllegalArgumentException("Fornecedor não encontrado.");
+        }
+
+        return saidaEstoqueRepository.save(saidaEstoque);
     }
 
-    public List<SaidaEstoque> listarSaidas() {
-        return repository.findAll();
+
+    public List<SaidaEstoque> listarTodas() {
+        return saidaEstoqueRepository.findAll();
     }
 
-    public SaidaEstoque buscarPorId(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Saída de estoque não encontrada com ID: " + id));
+    public Optional<SaidaEstoque> buscarPorId(Long id) {
+        return saidaEstoqueRepository.findById(id);
     }
 
-    public SaidaEstoque salvarSaida(SaidaEstoque saidaEstoque) {
-        return repository.save(saidaEstoque);
-    }
-
-    public SaidaEstoque atualizarSaida(Long id, SaidaEstoque novaSaida) {
-        SaidaEstoque existente = buscarPorId(id);
-        existente.setProduto(novaSaida.getProduto());
-        existente.setEstoque(novaSaida.getEstoque());
-        existente.setQuantidade(novaSaida.getQuantidade());
-        existente.setDataSaida(novaSaida.getDataSaida());
-        existente.setCategoria(novaSaida.getCategoria());
-        existente.setFornecedor(novaSaida.getFornecedor());
-        return repository.save(existente);
-    }
-
-    public void deletarSaida(Long id) {
-        SaidaEstoque saida = buscarPorId(id);
-        repository.delete(saida);
+    public void deletarPorId(Long id) {
+        saidaEstoqueRepository.deleteById(id);
     }
 }
