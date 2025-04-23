@@ -7,6 +7,7 @@ import com.lojacosmeticos.lojacosmeticos.Spring.repository.FornecedorRepository;
 import com.lojacosmeticos.lojacosmeticos.Spring.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,6 +25,7 @@ public class EntradaEstoqueService {
     @Autowired
     private EstoqueRepository estoqueRepository;
 
+    @Transactional
     public EntradaEstoque registrarEntrada(EntradaEstoque entradaEstoque) {
         if (entradaEstoque.getQuantidade() <= 0) {
             throw new IllegalArgumentException("A quantidade deve ser maior que zero.");
@@ -40,6 +42,16 @@ public class EntradaEstoqueService {
         if (entradaEstoque.getFornecedor() == null || !fornecedorRepository.existsById(entradaEstoque.getFornecedor().getId())) {
             throw new IllegalArgumentException("Fornecedor não encontrado.");
         }
+
+        Estoque estoque = estoqueRepository.findById(entradaEstoque.getEstoque().getId())
+                .orElseThrow(() -> new IllegalArgumentException("Estoque não encontrado"));
+
+        if (estoque.getQuantidadeAtual() == null) {
+            estoque.setQuantidadeAtual(0);
+        }
+
+        estoque.setQuantidadeAtual(estoque.getQuantidadeAtual() + entradaEstoque.getQuantidade());
+        estoqueRepository.save(estoque);
 
         return entradaEstoqueRepository.save(entradaEstoque);
     }

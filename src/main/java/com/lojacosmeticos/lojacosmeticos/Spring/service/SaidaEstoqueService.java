@@ -5,6 +5,7 @@ import com.lojacosmeticos.lojacosmeticos.Spring.repository.EstoqueRepository;
 import com.lojacosmeticos.lojacosmeticos.Spring.repository.FornecedorRepository;
 import com.lojacosmeticos.lojacosmeticos.Spring.repository.ProdutoRepository;
 import com.lojacosmeticos.lojacosmeticos.Spring.repository.SaidaEstoqueRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,7 @@ public class SaidaEstoqueService {
     @Autowired
 
     private FornecedorRepository fornecedorRepository;
+    @Transactional
 
 
     public SaidaEstoque registrarSaida(SaidaEstoque saidaEstoque) throws Exception {
@@ -46,6 +48,16 @@ public class SaidaEstoqueService {
         if (saidaEstoque.getFornecedor() == null || !fornecedorRepository.existsById(saidaEstoque.getFornecedor().getId())) {
             throw new IllegalArgumentException("Fornecedor não encontrado.");
         }
+
+        Estoque estoque = estoqueRepository.findById(saidaEstoque.getEstoque().getId())
+                .orElseThrow(() -> new IllegalArgumentException("Estoque não encontrado."));
+
+        if (estoque.getQuantidadeAtual() == null || estoque.getQuantidadeAtual() < saidaEstoque.getQuantidade()) {
+            throw new IllegalArgumentException("Quantidade em estoque insuficiente.");
+        }
+
+        estoque.setQuantidadeAtual(estoque.getQuantidadeAtual() - saidaEstoque.getQuantidade());
+        estoqueRepository.save(estoque);
 
         return saidaEstoqueRepository.save(saidaEstoque);
     }

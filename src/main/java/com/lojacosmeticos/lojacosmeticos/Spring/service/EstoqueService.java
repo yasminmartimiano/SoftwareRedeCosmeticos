@@ -35,7 +35,8 @@ public class EstoqueService {
     }
 
     public Estoque criarEstoque(Produto produto, Integer quantidadeInicial) {
-        Estoque estoque = new Estoque();
+        Estoque estoque;
+        estoque = new Estoque();
         estoque.setProduto(produto);
         estoque.setQuantidadeAtual(quantidadeInicial);
         return estoqueRepository.save(estoque);

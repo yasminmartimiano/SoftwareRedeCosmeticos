@@ -10,41 +10,43 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/saida_estoque")
 public class SaidaEstoqueController {
 
     @Autowired
-    private SaidaEstoqueRepository saidaEstoqueRepository;
-
-    @Autowired
-    private EstoqueRepository estoqueRepository;
+    private SaidaEstoqueService saidaEstoqueService;
 
     @PostMapping
-    public ResponseEntity<String> registrarSaida(@RequestBody SaidaEstoque saida) {
+    public ResponseEntity<SaidaEstoque> registrarSaida(@RequestBody SaidaEstoque saidaEstoque) {
         try {
-            Estoque estoque = saida.getEstoque();
-            if (estoque.getQuantidadeAtual() < saida.getQuantidade()) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Estoque insuficiente para essa saída!");
-            }
-            estoque.setQuantidadeAtual(estoque.getQuantidadeAtual() - saida.getQuantidade());
-            estoqueRepository.save(estoque);
-            saidaEstoqueRepository.save(saida);
-            return ResponseEntity.ok("Saída registrada e estoque atualizado!");
+            SaidaEstoque saidaRegistrada = saidaEstoqueService.registrarSaida(saidaEstoque);
+            return ResponseEntity.status(HttpStatus.CREATED).body(saidaRegistrada);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Erro ao registrar saída: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
     @GetMapping
-    public ResponseEntity<?> listarSaidas() {
-        try {
-            return ResponseEntity.ok(saidaEstoqueRepository.findAll());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Erro ao listar saídas: " + e.getMessage());
-        }
+    public List<SaidaEstoque> listarSaidas() {
+        return saidaEstoqueService.listarTodas();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<SaidaEstoque> buscarPorId(@PathVariable Long id) {
+        return saidaEstoqueService.buscarPorId(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        saidaEstoqueService.deletarPorId(id);
+        return ResponseEntity.noContent().build();
     }
 }
 

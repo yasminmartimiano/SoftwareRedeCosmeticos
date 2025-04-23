@@ -1,5 +1,6 @@
 package com.lojacosmeticos.lojacosmeticos.Spring.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
@@ -12,22 +13,25 @@ public class Estoque {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "produto_id", nullable = false)
     private Produto produto;
-    @NotNull
     @Column(name = "quantidade_atual", nullable = false)
-    private Integer quantidadeAtual =0;
+    private Integer quantidadeAtual;
+
+    public Estoque() {
+        this.quantidadeAtual = 0;
+    }
+
 
     public Estoque(Long id, Produto produto, Integer quantidadeAtual) {
         this.id = id;
         this.produto = produto;
-        this.quantidadeAtual = quantidadeAtual;
+        this.quantidadeAtual = quantidadeAtual != null ? quantidadeAtual : 0;
     }
 
-    public Estoque() {
-    }
+
 
     public Long getId() {
         return id;
