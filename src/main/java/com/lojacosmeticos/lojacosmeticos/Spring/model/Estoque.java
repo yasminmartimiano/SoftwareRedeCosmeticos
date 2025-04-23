@@ -15,7 +15,7 @@ public class Estoque {
 
     @JsonIgnore
     @OneToOne
-    @JoinColumn(name = "produto_id", nullable = false)
+    @JoinColumn(name = "produto_id")
     private Produto produto;
     @Column(name = "quantidade_atual", nullable = false)
     private Integer quantidadeAtual;
@@ -30,8 +30,6 @@ public class Estoque {
         this.produto = produto;
         this.quantidadeAtual = quantidadeAtual != null ? quantidadeAtual : 0;
     }
-
-
 
     public Long getId() {
         return id;

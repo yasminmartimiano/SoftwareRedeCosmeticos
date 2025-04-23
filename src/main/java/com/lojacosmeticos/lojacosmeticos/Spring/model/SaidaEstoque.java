@@ -15,13 +15,14 @@ public class SaidaEstoque {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @NotNull
     @ManyToOne
     @JoinColumn(name = "produto_id", nullable = false)
     private Produto produto;
 
-   @JsonIgnore
-  @OneToOne
+    @NotNull
+    @ManyToOne
     @JoinColumn(name = "estoque_id",nullable = false)
     private Estoque estoque;
     @NotNull
