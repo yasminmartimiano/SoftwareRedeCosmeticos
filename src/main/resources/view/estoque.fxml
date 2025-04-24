@@ -48,13 +48,21 @@
                   <Font name="System Bold" size="15.0" />
                </font>
             </Button>
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Maresia Beauty" textAlignment="CENTER" wrappingWidth="157.58056640625">
+               <font>
+                  <Font name="Times New Roman" size="16.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="25.0" />
+               </VBox.margin>
+            </Text>
          </children>
       </VBox>
    </left>
    <center>
       <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <Text fill="#b77e39" strokeType="OUTSIDE" strokeWidth="0.0" text="Vendas">
+            <Text fill="#b77e39" strokeType="OUTSIDE" strokeWidth="0.0" text="Estoque">
                <font>
                   <Font name="System Bold" size="23.0" />
                </font>
@@ -69,13 +77,13 @@
                <children>
                   <ImageView fitHeight="56.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/sales.png" />
+                        <Image url="@../images/in-stock.png" />
                      </image>
                      <HBox.margin>
                         <Insets bottom="10.0" left="25.0" right="10.0" top="10.0" />
                      </HBox.margin>
                   </ImageView>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Vendas: Registre todas as vendas realizadas, acompanhe o histórico e tenha um controle detalhado de tudo que foi vendido." wrappingWidth="274.64683532714844">
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Estoque: Aqui você pode cadastrar, acompanhar e controlar a quantidade dos produtos disponíveis. " wrappingWidth="274.64683532714844">
                      <HBox.margin>
                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                      </HBox.margin>
@@ -84,36 +92,11 @@
             </HBox>
             <HBox prefHeight="65.0" prefWidth="438.0">
                <children>
-                  <VBox prefHeight="223.0" prefWidth="66.0">
-                     <children>
-                        <Label text="Data">
-                           <font>
-                              <Font name="System Bold" size="12.0" />
-                           </font>
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
-                        </Label>
-                        <Line endX="-46.407066345214844" endY="0.09286805242300034" startX="-100.0" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="2025-01-012025-01-022025-01-032025-01-042025-01-052025-01-062025-01-072025-01-082025-01-092025-01-102025-01-112025-01-122025-01-132025-01-142025-01-15" wrappingWidth="48.246803283691406">
-                           <font>
-                              <Font size="9.0" />
-                           </font>
-                        </Text>
-                     </children>
-                     <opaqueInsets>
-                        <Insets left="10.0" />
-                     </opaqueInsets>
-                     <HBox.margin>
-                        <Insets left="20.0" />
-                     </HBox.margin>
-                  </VBox>
-                  <Line endX="-99.99999237060547" endY="192.0928955078125" startX="-100.0" />
                   <VBox prefHeight="220.0" prefWidth="152.0">
                      <children>
                         <Label alignment="CENTER" contentDisplay="CENTER" text="Produto" textAlignment="CENTER">
                            <VBox.margin>
-                              <Insets right="10.0" />
+                              <Insets left="10.0" right="10.0" />
                            </VBox.margin>
                            <font>
                               <Font name="System Bold" size="13.0" />
@@ -185,13 +168,105 @@
                               <Font size="9.0" />
                            </font>
                         </Label>
+                        <Label alignment="CENTER" contentDisplay="CENTER" text="Óleo de Argan Kérastase  " textAlignment="CENTER">
+                           <font>
+                              <Font size="9.0" />
+                           </font>
+                        </Label>
                      </children>
                      <HBox.margin>
-                        <Insets left="10.0" />
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="5.0" />
                      </HBox.margin>
                   </VBox>
-                  <Line endX="-99.99999237060547" endY="192.0928955078125" startX="-100.0" />
-                  <VBox prefHeight="201.0" prefWidth="73.0">
+                  <Line endX="-100.00161743164062" endY="224.19288635253906" startX="-100.0" />
+                  <VBox prefHeight="230.0" prefWidth="69.0">
+                     <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" text="Quant." textAlignment="CENTER">
+                           <VBox.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font>
+                        </Label>
+                        <Line endX="-46.407066345214844" endY="0.09286805242300034" startX="-100.0" />
+                        <Label alignment="CENTER" contentDisplay="CENTER" text="100" textAlignment="CENTER">
+                           <font>
+                              <Font size="9.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" contentDisplay="CENTER" text="145" textAlignment="CENTER">
+                           <font>
+                              <Font size="9.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" contentDisplay="CENTER" text="223" textAlignment="CENTER">
+                           <font>
+                              <Font size="9.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" contentDisplay="CENTER" text="78" textAlignment="CENTER">
+                           <font>
+                              <Font size="9.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" contentDisplay="CENTER" text="96" textAlignment="CENTER">
+                           <font>
+                              <Font size="9.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" contentDisplay="CENTER" text="433" textAlignment="CENTER">
+                           <font>
+                              <Font size="9.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" contentDisplay="CENTER" text="425" textAlignment="CENTER">
+                           <font>
+                              <Font size="9.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" contentDisplay="CENTER" text="100" textAlignment="CENTER">
+                           <font>
+                              <Font size="9.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" contentDisplay="CENTER" text="85" textAlignment="CENTER">
+                           <font>
+                              <Font size="9.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" contentDisplay="CENTER" text="377" textAlignment="CENTER">
+                           <font>
+                              <Font size="9.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" contentDisplay="CENTER" text="22" textAlignment="CENTER">
+                           <font>
+                              <Font size="9.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" contentDisplay="CENTER" text="744" textAlignment="CENTER">
+                           <font>
+                              <Font size="9.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" contentDisplay="CENTER" text="67" textAlignment="CENTER">
+                           <font>
+                              <Font size="9.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" contentDisplay="CENTER" text="437" textAlignment="CENTER">
+                           <font>
+                              <Font size="9.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <HBox.margin>
+                        <Insets left="10.0" top="5.0" />
+                     </HBox.margin>
+                  </VBox>
+                  <Line endX="-100.00161743164062" endY="224.19288635253906" startX="-100.0" />
+                  <VBox prefHeight="220.0" prefWidth="152.0">
                      <children>
                         <Label alignment="CENTER" contentDisplay="CENTER" text="Preço" textAlignment="CENTER">
                            <VBox.margin>
@@ -209,14 +284,14 @@
                         </Text>
                      </children>
                      <HBox.margin>
-                        <Insets left="10.0" />
+                        <Insets left="10.0" top="5.0" />
                      </HBox.margin>
                   </VBox>
                   <TableView prefHeight="200.0" prefWidth="200.0">
-                     <columns>
-                        <TableColumn prefWidth="75.0" text="C1" />
-                        <TableColumn prefWidth="75.0" text="C2" />
-                     </columns>
+                    <columns>
+                      <TableColumn prefWidth="75.0" text="C1" />
+                      <TableColumn prefWidth="75.0" text="C2" />
+                    </columns>
                   </TableView>
                </children>
             </HBox>

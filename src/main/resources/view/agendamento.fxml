@@ -2,12 +2,15 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -74,7 +77,7 @@
                <children>
                   <ImageView fitHeight="56.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../Downloads/agenda.png" />
+                        <Image url="@../images/agenda.png" />
                      </image>
                      <HBox.margin>
                         <Insets bottom="10.0" left="25.0" right="10.0" top="10.0" />
@@ -87,7 +90,69 @@
                   </Text>
                </children>
             </HBox>
-            <TextArea prefHeight="200.0" prefWidth="200.0" />
+            <HBox prefHeight="65.0" prefWidth="438.0">
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Label text="Datas e Horarios">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="2025-01-28 09:00:00  2025-01-28 10:00:00  2025-01-28 11:00:00  2025-01-28 12:00:00  2025-01-28 13:00:00  2025-01-28 14:00:00  2025-01-28 15:00:00  2025-01-28 16:00:00  2025-01-28 17:00:00  2025-01-29 09:00:00  2025-01-29 10:00:00  2025-01-29 11:00:00  2025-01-29 12:00:00  2025-01-29 13:00:00  2025-01-29 14:00:00  " wrappingWidth="101.8469009399414">
+                           <font>
+                              <Font size="9.0" />
+                           </font>
+                        </Text>
+                     </children>
+                     <HBox.margin>
+                        <Insets left="10.0" top="10.0" />
+                     </HBox.margin>
+                  </VBox>
+                  <Line endX="-101.26030731201172" endY="168.3819122314453" startX="-100.00009155273438" startY="-38.47152328491211" />
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Label text="ID, Funcionário e Serviço">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Cliente: 1 | Funcionário: 1 | Serviço: 1  Cliente: 2 | Funcionário: 2 | Serviço: 3  Cliente: 3 | Funcionário: 3 | Serviço: 5  Cliente: 4 | Funcionário: 4 | Serviço: 7  Cliente: 5 | Funcionário: 5 | Serviço: 9  Cliente: 6 | Funcionário: 6 | Serviço: 10  Cliente: 7 | Funcionário: 7 | Serviço: 2  Cliente: 8 | Funcionário: 8 | Serviço: 4  Cliente: 9 | Funcionário: 9 | Serviço: 6  Cliente: 10 | Funcionário: 10 | Serviço: 8  Cliente: 11 | Funcionário: 11 | Serviço: 11  Cliente: 12 | Funcionário: 12 | Serviço: 13  Cliente: 13 | Funcionário: 13 | Serviço: 15  Cliente: 14 | Funcionário: 14 | Serviço: 14  Cliente: 15 | Funcionário: 15 | Serviço: 12  " wrappingWidth="165.04685974121094">
+                           <font>
+                              <Font size="9.0" />
+                           </font>
+                        </Text>
+                     </children>
+                     <HBox.margin>
+                        <Insets left="10.0" top="10.0" />
+                     </HBox.margin>
+                  </VBox>
+                  <Line endX="-101.26030731201172" endY="168.3819122314453" startX="-100.00009155273438" startY="-38.47152328491211" />
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Label text="Status">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Concluído  Concluído  Pendente  Pendente  Concluído  Pendente  Concluído  Pendente  Pendente  Concluído  Pendente  Pendente  Concluído  Concluído  Pendente  " wrappingWidth="67.44688415527344">
+                           <font>
+                              <Font size="9.0" />
+                           </font>
+                        </Text>
+                     </children>
+                     <HBox.margin>
+                        <Insets left="10.0" top="10.0" />
+                     </HBox.margin>
+                  </VBox>
+                  <TableView prefHeight="200.0" prefWidth="200.0">
+                     <columns>
+                        <TableColumn prefWidth="75.0" text="C1" />
+                        <TableColumn prefWidth="75.0" text="C2" />
+                     </columns>
+                  </TableView>
+               </children>
+            </HBox>
          </children>
       </VBox>
    </center>
