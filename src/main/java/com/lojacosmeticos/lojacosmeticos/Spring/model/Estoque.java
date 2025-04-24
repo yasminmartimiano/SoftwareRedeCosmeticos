@@ -13,6 +13,7 @@ public class Estoque {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
     @JsonIgnore
     @OneToOne
     @JoinColumn(name = "produto_id")

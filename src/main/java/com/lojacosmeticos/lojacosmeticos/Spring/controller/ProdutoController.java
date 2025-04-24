@@ -27,8 +27,10 @@ public class ProdutoController {
         }
     }
 
+
+
     @GetMapping
-    public ResponseEntity<?> listarProdutos() {
+    public ResponseEntity<?> listarTodos() {
         try {
             return ResponseEntity.ok(produtoService.listarTodos());
         } catch (Exception e) {
@@ -37,7 +39,7 @@ public class ProdutoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> buscarProdutoPorId(@PathVariable Long id) {
+    public ResponseEntity<?> buscarPorId(@PathVariable Long id) {
         try {
             Optional<Produto> produto = produtoService.buscarPorId(id);
             if (produto.isPresent()) {

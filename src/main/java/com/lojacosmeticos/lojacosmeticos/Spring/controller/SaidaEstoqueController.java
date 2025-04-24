@@ -31,10 +31,7 @@ public class SaidaEstoqueController {
         }
     }
 
-    @GetMapping
-    public List<SaidaEstoque> listarSaidas() {
-        return saidaEstoqueService.listarTodas();
-    }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<SaidaEstoque> buscarPorId(@PathVariable Long id) {
